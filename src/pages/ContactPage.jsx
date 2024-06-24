@@ -6,9 +6,11 @@ const contactformDataInitial = {
   type: "",
   message: "",
   color: "",
+  subscribeList: [],
 };
 
 const colors = ["red", "green", "blue"];
+const subscribeListValues = ["teknoloji", "sanat", "bilim", "siyaset", "müzik"];
 
 export const ContactPage = () => {
   const [formData, setFormData] = useState(contactformDataInitial);
@@ -20,6 +22,17 @@ export const ContactPage = () => {
   const inputChangeHandler = (event) => {
     const { value, name, type, checked } = event.target;
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+  };
+  const listChangeHandler = (event) => {
+    const { value, name, checked } = event.target;
+    if (checked) {
+      setFormData({ ...formData, [name]: [...formData[name], value] });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: [...formData[name].filter((d) => d != value)],
+      });
+    }
   };
 
   const submitHandler = (event) => {
@@ -65,7 +78,9 @@ export const ContactPage = () => {
               onChange={inputChangeHandler}
               value={formData.type}
             >
-              <option disabled selected value={""}>Lütfen ileti tipi seçiniz...</option>
+              <option disabled selected value={""}>
+                Lütfen ileti tipi seçiniz...
+              </option>
               <option>Şikayet</option>
               <option>Öneri</option>
               <option>Andaç</option>
@@ -92,6 +107,22 @@ export const ContactPage = () => {
                   value={color}
                   checked={formData.color === color}
                   onChange={inputChangeHandler}
+                />
+              </div>
+            ))}
+          </div>
+          <div>
+            <label htmlFor="contact-color">Renk</label>
+            {subscribeListValues.map((subcribeVal) => (
+              <div key={subcribeVal}>
+                <label htmlFor={"contact-" + subcribeVal}>{subcribeVal}</label>
+                <input
+                  id={"contact-" + subcribeVal}
+                  type="checkbox"
+                  name="subscribeList"
+                  value={subcribeVal}
+                  checked={formData.subscribeList.find((e) => e == subcribeVal)}
+                  onChange={listChangeHandler}
                 />
               </div>
             ))}
