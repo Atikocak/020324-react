@@ -9,6 +9,7 @@ import { HomePage } from "./pages/HomePage";
 import { CounterPage } from "./pages/CounterPage";
 import { ProductDetail } from "./pages/ProductDetail";
 import { LoginPage } from "./pages/LoginPage";
+import { ContactPage } from "./pages/ContactPage";
 
 // Root Component
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Link to="/counter"> Sayaç </Link>
           <Link to="/products"> Ürünler </Link>
           <Link to="/login"> Login </Link>
+          <Link to="/contact"> Contact </Link>
         </nav>
       </header>
       <div className="page-content">
@@ -43,6 +45,9 @@ function App() {
           </Route>
           <Route path="/login" exact>
             <LoginPage />
+          </Route>
+          <Route path="/contact" exact>
+            <ContactPage />
           </Route>
           <Route path="/products" exact>
             <ProductsPage />
