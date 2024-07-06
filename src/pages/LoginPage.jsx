@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const formDataInitial = {
   email: "",
@@ -13,6 +14,7 @@ export const LoginPage = () => {
   // şifre
   // beni hatırla
   const [formData, setFormData] = useState(formDataInitial);
+  const history = useHistory();
 
   const reset = () => {
     setFormData(formDataInitial);
@@ -26,15 +28,16 @@ export const LoginPage = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     // login request
-    axios
-      .post("http://myweb.com/api/login", formData)
-      .then((res) => {
-        console.log(res);
-        // todo: ana sayfaya yönlendir
-      })
-      .catch((err) => {
-        console.error("AXIOS ERR: ", err);
-      });
+    // axios
+    //   .post("http://myweb.com/api/login", formData)
+    //   .then((res) => {
+    //     console.log(res);
+    //     // todo: ana sayfaya yönlendir
+    //   })
+    //   .catch((err) => {
+    //     console.error("AXIOS ERR: ", err);
+    //   });
+    history.push("/");
   };
 
   useEffect(() => {
@@ -57,6 +60,7 @@ export const LoginPage = () => {
               name="email"
               value={formData.email}
               onChange={inputChangeHandler}
+              data-cy="login-email-input"
             />
           </div>
           <div>
@@ -67,6 +71,7 @@ export const LoginPage = () => {
               name="password"
               value={formData.password}
               onChange={inputChangeHandler}
+              data-cy="login-password-input"
             />
           </div>
           <div>
@@ -77,12 +82,13 @@ export const LoginPage = () => {
               name="rememberMe"
               checked={formData.rememberMe}
               onChange={inputChangeHandler}
+              data-cy="login-remember-input"
             />
           </div>
           <div>
             <label></label>
             <div>
-              <button className="btn" type="submit">
+              <button className="btn" type="submit" data-cy="login-submit-btn">
                 Login
               </button>
               <button className="btn" type="button" onClick={reset}>
