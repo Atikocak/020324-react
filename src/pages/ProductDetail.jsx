@@ -6,10 +6,15 @@ export const ProductDetail = () => {
   const [product, setProduct] = useState({});
   const { productId, productName } = useParams();
   const history = useHistory();
+  const [subscribed, setSubscribed] = useState(false);
 
   const goBack = () => {
     history.goBack();
     // history.push("/")
+  };
+
+  const toggleSubscribe = () => {
+    setSubscribed(!subscribed);
   };
 
   useEffect(() => {
@@ -22,7 +27,7 @@ export const ProductDetail = () => {
 
   return (
     <div>
-      <h1>Detail: {product.name}</h1>
+      <h1 className="sayfa-baslik">Detail: {product.name}</h1>
       <button onClick={goBack}>{"<"} Geri</button>
       <hr />
       <img
@@ -31,6 +36,9 @@ export const ProductDetail = () => {
       <h3>{product?.name}</h3>
       <p>{product?.description}</p>
       <p>{product?.price} ₺</p>
+      <button onClick={toggleSubscribe}>
+        {subscribed ? "Subscribed" : "Not Subscribed"}
+      </button>
     </div>
   );
 };

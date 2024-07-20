@@ -42,7 +42,7 @@ export const ProductsPage = () => {
 
   return (
     <div>
-      <h1>Ürünler Sayfası</h1>
+      <h1 className="sayfa-baslik">Ürünler Sayfası</h1>
       <hr />
 
       {sozler}

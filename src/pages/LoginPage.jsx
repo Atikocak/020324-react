@@ -47,7 +47,7 @@ export const LoginPage = () => {
 
   return (
     <div>
-      <h1>Login Page</h1>
+      <h1 className="sayfa-baslik">Login Page</h1>
       <hr />
       <div className="form-container">
         <div className="form-bg"></div>
@@ -88,7 +88,11 @@ export const LoginPage = () => {
           <div>
             <label></label>
             <div>
-              <button className="btn" type="submit" data-cy="login-submit-btn">
+              <button
+                className="btn hover:animate-ping p-[22px]"
+                type="submit"
+                data-cy="login-submit-btn"
+              >
                 Login
               </button>
               <button className="btn" type="button" onClick={reset}>

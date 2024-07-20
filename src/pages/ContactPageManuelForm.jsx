@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Counter } from "../components/Counter";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
 const contactformDataInitial = {
   title: "",
@@ -11,27 +9,35 @@ const contactformDataInitial = {
   subscribeList: [],
 };
 
-const titleInputProps = {
-  id: "contact-title",
-  type: "text",
-};
-
 const colors = ["red", "green", "blue"];
 const subscribeListValues = ["teknoloji", "sanat", "bilim", "siyaset", "müzik"];
 
 export const ContactPage = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({
-    defaultValues: {
-      ...contactformDataInitial,
-    },
-  });
+  const [formData, setFormData] = useState(contactformDataInitial);
 
-  const postContactForm = (formData) => {
-    // contact request
+  const reset = () => {
+    setFormData(formDataInitial);
+  };
+
+  const inputChangeHandler = (event) => {
+    const { value, name, type, checked } = event.target;
+    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+  };
+  const listChangeHandler = (event) => {
+    const { value, name, checked } = event.target;
+    if (checked) {
+      setFormData({ ...formData, [name]: [...formData[name], value] });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: [...formData[name].filter((d) => d != value)],
+      });
+    }
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    // login request
     axios
       .post("http://myweb.com/api/login", formData)
       .then((res) => {
@@ -43,37 +49,34 @@ export const ContactPage = () => {
       });
   };
 
+  useEffect(() => {
+    console.warn(" ****** FORM DATA STATE UPDATED ****** ");
+    console.log(formData);
+  }, [formData]);
+
   return (
     <div>
       <h1 className="sayfa-baslik">Contact Us!</h1>
       <hr />
       <div className="form-container">
         <div className="form-bg"></div>
-        <form onSubmit={handleSubmit(postContactForm)}>
-          <h2>Valid {!isValid && " Değil"}</h2>
+        <form onSubmit={submitHandler}>
           <div>
             <label htmlFor="contact-title">Başlık</label>
             <input
-              {...titleInputProps}
-              {...register("title", {
-                required: "Bu alan zorunludur...",
-                maxLength: {
-                  value: 40,
-                  message: "En fazla 40 karakter girilebilir",
-                },
-                pattern: {
-                  value: /^[A-Za-z]+$/i,
-                  message:
-                    "Başlık alanına rakam veya özel karakter giremezsiniz",
-                },
-              })}
+              id="contact-title"
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={inputChangeHandler}
             />
-            {errors.title && <p className="error">{errors.title.message}</p>}
           </div>
           <div>
             <label htmlFor="login-email">Tip</label>
             <select
-              {...register("type", { required: "Bu alan zorunludur..." })}
+              name="type"
+              onChange={inputChangeHandler}
+              value={formData.type}
             >
               <option disabled selected value={""}>
                 Lütfen ileti tipi seçiniz...
@@ -87,7 +90,9 @@ export const ContactPage = () => {
             <label htmlFor="contact-message">Mesaj</label>
             <textarea
               id="contact-message"
-              {...register("message", { required: "Bu alan zorunludur..." })}
+              name="message"
+              value={formData.message}
+              onChange={inputChangeHandler}
             />
           </div>
           <div>
@@ -98,9 +103,10 @@ export const ContactPage = () => {
                 <input
                   id={"contact-" + color}
                   type="radio"
-                  value={color}
                   name="color"
-                  {...register("color")}
+                  value={color}
+                  checked={formData.color === color}
+                  onChange={inputChangeHandler}
                 />
               </div>
             ))}
@@ -113,8 +119,10 @@ export const ContactPage = () => {
                 <input
                   id={"contact-" + subcribeVal}
                   type="checkbox"
+                  name="subscribeList"
                   value={subcribeVal}
-                  {...register("subscribeList")}
+                  checked={formData.subscribeList.find((e) => e == subcribeVal)}
+                  onChange={listChangeHandler}
                 />
               </div>
             ))}
@@ -122,16 +130,10 @@ export const ContactPage = () => {
           <div>
             <label></label>
             <div>
-              <button className="btn" type="submit" disabled={isValid}>
-                Submit
+              <button className="btn" type="submit">
+                Login
               </button>
-              <button
-                className="btn"
-                type="button"
-                onClick={() => {
-                  toast.success("Form datası silinmiştir!");
-                }}
-              >
+              <button className="btn" type="button" onClick={reset}>
                 Reset
               </button>
             </div>
