@@ -17,7 +17,7 @@ export const HomePage = () => {
       </p>
       <p className="text-lg text-sky-600">
         {format(yesterday, "d MMMM EEEE, yyyy", { locale: tr })} dündür,{" "}
-        {format(yesterday, "MMM")} bugündür!
+        {format(new Date(), "MMM")} bugündür!
       </p>
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis atque,

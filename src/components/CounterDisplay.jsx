@@ -13,7 +13,7 @@ export const CounterDisplay = ({
   counterArttir,
   artisMiktari,
   counterAzalt,
-  changeCounter,
+  counterReset,
   hide = false,
 }) => {
   return (
@@ -22,14 +22,8 @@ export const CounterDisplay = ({
       <h3>{title}</h3>
       <h4 style={counterTextStyle}>{counter}</h4>
       <button onClick={counterArttir}>+ {artisMiktari}</button>
-      <button onClick={() => changeCounter(0)}>RESET</button>
-      <button
-        onClick={function () {
-          counterAzalt();
-        }}
-      >
-        - {artisMiktari}
-      </button>
+      <button onClick={counterReset}>RESET</button>
+      <button onClick={counterAzalt}>- {artisMiktari}</button>
     </div>
   );
 };

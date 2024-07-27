@@ -10,11 +10,15 @@ import { CounterPage } from "./pages/CounterPage";
 import { ProductDetail } from "./pages/ProductDetail";
 import { LoginPage } from "./pages/LoginPage";
 import { ContactPage } from "./pages/ContactPage";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+
+const defaultUser = { name: "", email: "" };
 
 // Root Component
 function App() {
   const [count, setCount] = useState(0);
   const [show1, setShow1] = useState(true);
+  const [user, setUser] = useLocalStorage("user", defaultUser);
 
   const userName = "";
 
@@ -25,15 +29,21 @@ function App() {
   // Java Script Expression > JSX
   return (
     <>
-      <header>
+      <header className="flex justify-between">
         Project Header
         <nav>
           <Link to="/"> Ana Sayfa </Link>
           <Link to="/counter"> Sayaç </Link>
           <Link to="/products"> Ürünler </Link>
-          <Link to="/login"> Login </Link>
+          {!user.name && <Link to="/login"> Login </Link>}
           <Link to="/contact"> Contact </Link>
         </nav>
+        <span>
+          <span>{user.name ? user.name : "Misafir kullanıcı"}</span>
+          {user.name && (
+            <button onClick={() => setUser(defaultUser)}>Sign out</button>
+          )}
+        </span>
       </header>
       <div className="page-content">
         <Switch>
@@ -44,7 +54,7 @@ function App() {
             <CounterPage />
           </Route>
           <Route path="/login" exact>
-            <LoginPage />
+            <LoginPage user={user} setUser={setUser} />
           </Route>
           <Route path="/contact" exact>
             <ContactPage />

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const formDataInitial = {
   email: "",
@@ -9,7 +10,7 @@ const formDataInitial = {
   rememberMe: false,
 };
 
-export const LoginPage = () => {
+export const LoginPage = ({ setUser }) => {
   // email
   // şifre
   // beni hatırla
@@ -37,6 +38,7 @@ export const LoginPage = () => {
     //   .catch((err) => {
     //     console.error("AXIOS ERR: ", err);
     //   });
+    setUser({ name: formData.email, email: formData.email });
     history.push("/");
   };
 
